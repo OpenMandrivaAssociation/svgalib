@@ -14,6 +14,7 @@ Group:		System/Libraries
 URL:		http://www.svgalib.org/
 Source0:	http://www.arava.co.il/matan/svgalib/%{name}-%{version}.tar.gz
 #Patch0:		%{name}-1.9.21-norootbuild.patch.bz2
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The svgalib package provides the SVGAlib low-level graphics library for
