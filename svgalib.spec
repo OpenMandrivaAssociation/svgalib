@@ -1,14 +1,12 @@
 %define	name	svgalib
 %define	version	1.9.25
 %define	major	1
-%define	rel	1
-%define	release	%mkrel %{rel}
 %define	libname	%mklibname %{name} %{major}
 
 Name:		%{name}
 Summary:	A low-level fullscreen SVGA graphics library
 Version:	%{version}
-Release:	%{release}
+Release:	%mkrel 2
 License:	Public Domain
 Group:		System/Libraries
 URL:		http://www.svgalib.org/
