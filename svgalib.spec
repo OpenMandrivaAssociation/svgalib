@@ -77,9 +77,13 @@ rm -f %{buildroot}%{_datadir}/{dvorak-us.keymap,libvga.config,libvga.et4000,null
 %clean
 rm -fr %{buildroot}
 
+%if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %postun -n %{libname} -p /sbin/ldconfig
+%endif
 
 %files
 %defattr(-,root,root)
