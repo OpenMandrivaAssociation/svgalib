@@ -6,7 +6,7 @@
 Name:		%{name}
 Summary:	A low-level fullscreen SVGA graphics library
 Version:	%{version}
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	Public Domain
 Group:		System/Libraries
 URL:		http://www.svgalib.org/
