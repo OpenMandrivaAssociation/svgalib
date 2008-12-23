@@ -3,15 +3,20 @@
 %define	major	1
 %define	libname	%mklibname %{name} %{major}
 
-Name:		%{name}
 Summary:	A low-level fullscreen SVGA graphics library
+Name:		%{name}
 Version:	%{version}
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	Public Domain
 Group:		System/Libraries
 URL:		http://www.svgalib.org/
 Source0:	http://www.arava.co.il/matan/svgalib/%{name}-%{version}.tar.gz
-#Patch0:		%{name}-1.9.21-norootbuild.patch.bz2
+Patch0:		svgalib-1.9.21-makefiles.patch
+Patch1:		svgalib-1.4.3-fhs.patch
+Patch2:		svgalib-1.9.21-demos.patch
+Patch3:		svgalib-1.9.21-cfg.patch
+Patch4:		svgalib-1.9.25-kernel-2.6.26.patch
+Patch5:		svgalib-1.9.25-LDFLAGS.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -48,31 +53,80 @@ independent from X Window System. Thus, this package is useless if you
 want to develop X11 applications.
 
 %prep
+
 %setup -q
-#%patch0 -p1 -b .peroyvind
+%patch0 -p1 -b .makefiles
+%patch1 -p1 -b .fhs
+%patch2 -p1 -b .demos
+%patch3 -p1 -b .defaultcfg
+%patch4 -p1 -b .kernel-2.6.26
+%patch5 -p1 -b .LDFLAGS
+
+#the testlinear demo needs svgalib's internal libvga header, so copy it to the
+#demo dir
+cp src/libvga.h demos
 
 %build
-%make shared OPTIMIZE="%{optflags}"
-#cd sharedlib; ln -s libvgagl.so.%{version} libvgagl.so; ln -s libvga.so.%{version} libvga.so; cd -
-cd threeDKit
-make OPTIMIZE="%{optflags} -I../gl" LIBS="-L../sharedlib -lm -lvgagl -lvga"
-cd -
-cd utils
-%make OPTIMIZE="%{optflags}"
-cd -
-%ifarch %{ix86}
-cd lrmi-0.9
-%make CFLAGS="%{optflags}"
-cd -
-%endif
+
+make OPTIMIZE="%{optflags} -Wno-pointer-sign" \
+    LDFLAGS="%{ldflags}" \
+    prefix=%{_prefix} \
+    NO_HELPER=y \
+    INCLUDE_ET4000_DRIVER=y \
+    INCLUDE_OAK_DRIVER=y \
+    INCLUDE_MACH32_DRIVER=y \
+    INCLUDE_ET3000_DRIVER=y \
+    INCLUDE_GVGA6400_DRIVER=y \
+    INCLUDE_ATI_DRIVER=y \
+    INCLUDE_G450C2_DRIVER=y \
+    INCLUDE_ET4000_DRIVER_TEST=y \
+    INCLUDE_FBDEV_DRIVER_TEST=y \
+    INCLUDE_VESA_DRIVER_TEST=y \
+    shared
+
+pushd utils
+    make OPTIMIZE="%{optflags} -Wno-pointer-sign" \
+    LDFLAGS="%{ldflags}" \
+    prefix=%{_prefix}
+popd
+
+pushd threeDKit
+make OPTIMIZE="%{optflags} -Wno-pointer-sign -I../gl" \
+    LDFLAGS="%{ldflags}" \
+    LIBS="-L../sharedlib -lm -lvgagl -lvga" \
+    prefix=%{_prefix} lib3dkit.so.%{version}
+popd
+
+pushd lrmi-0.9
+    make CFLAGS="%{optflags}" \
+    LDFLAGS="%{ldflags}"
+popd
 
 %install
 rm -rf %{buildroot}
+
 install -d %{buildroot}{%{_libdir},%{_sysconfdir}/vga}
-%makeinstall INSTALL_SHLIB="install -c -m755" INSTALLMODULE="" INSTALLDEV="" sharedlibdir=%{buildroot}%{_libdir}
+
+%makeinstall \
+    TOPDIR=%{buildroot} \
+    prefix=%{buildroot}%{_prefix} \
+    mandir=%{buildroot}%{_mandir} \
+    sharedlibdir=%{buildroot}%{_libdir} \
+    NO_HELPER=y \
+    INSTALL_PROGRAM="install -p -m755" \
+    INSTALL_SCRIPT="install -p -m755" \
+    INSTALL_SHLIB="install -p -m755" \
+    INSTALL_DATA="install -p -m644" \
+    INSTALLMODULE="" \
+    INSTALLDEV="" \
+
 install -m644 ./src/config/* %{buildroot}%{_sysconfdir}/vga
 
 rm -f %{buildroot}%{_datadir}/{dvorak-us.keymap,libvga.config,libvga.et4000,null.keymap}
+
+# use the newer lrmi stuff
+install -m0755 lrmi-0.9/mode3 %{buildroot}%{_bindir}/
+install -m0755 lrmi-0.9/vga_reset %{buildroot}%{_bindir}/
 
 %clean
 rm -fr %{buildroot}
@@ -87,12 +141,12 @@ rm -fr %{buildroot}
 
 %files
 %defattr(-,root,root)
+%doc 0-README LICENSE svgalib.lsm
 %dir %{_sysconfdir}/vga
 %config(noreplace) %{_sysconfdir}/vga/*
 %{_bindir}/*
 %{_mandir}/man?/*
 #%attr(1777,root,root) %dir /var/lib/svgalib
-%doc 0-README LICENSE svgalib.lsm
 
 %files -n %{libname}
 %defattr(-,root,root)
@@ -100,10 +154,8 @@ rm -fr %{buildroot}
 
 %files -n %{libname}-devel
 %defattr(-,root,root)
+%doc doc/CHANGES doc/DESIGN doc/Driver-programming-HOWTO doc/README.joystick doc/README.keymap doc/README.patching doc/README.vesa doc/TODO doc/svgalib.lsm
 %{_includedir}/*
 #%{_libdir}/*.a
 %{_libdir}/*.so
 %{_mandir}/man3/*
-%doc doc/CHANGES doc/DESIGN doc/Driver-programming-HOWTO doc/README.joystick doc/README.keymap doc/README.patching doc/README.vesa doc/TODO doc/svgalib.lsm
-
-
