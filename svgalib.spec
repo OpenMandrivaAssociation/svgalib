@@ -97,10 +97,12 @@ make OPTIMIZE="%{optflags} -Wno-pointer-sign -I../gl" \
     prefix=%{_prefix} lib3dkit.so.%{version}
 popd
 
+%ifarch %{ix86}
 pushd lrmi-0.9
     make CFLAGS="%{optflags}" \
     LDFLAGS="%{ldflags}"
 popd
+%endif
 
 %install
 rm -rf %{buildroot}
@@ -124,9 +126,11 @@ install -m644 ./src/config/* %{buildroot}%{_sysconfdir}/vga
 
 rm -f %{buildroot}%{_datadir}/{dvorak-us.keymap,libvga.config,libvga.et4000,null.keymap}
 
+%ifarch %{ix86}
 # use the newer lrmi stuff
 install -m0755 lrmi-0.9/mode3 %{buildroot}%{_bindir}/
 install -m0755 lrmi-0.9/vga_reset %{buildroot}%{_bindir}/
+%endif
 
 %clean
 rm -fr %{buildroot}
