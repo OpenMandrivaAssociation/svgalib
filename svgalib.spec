@@ -6,7 +6,7 @@
 Summary:	A low-level fullscreen SVGA graphics library
 Name:		%{name}
 Version:	%{version}
-Release:	%mkrel 4
+Release:	%mkrel 5
 License:	Public Domain
 Group:		System/Libraries
 URL:		http://www.svgalib.org/
@@ -18,6 +18,7 @@ Patch3:		svgalib-1.9.21-cfg.patch
 Patch4:		svgalib-1.9.25-kernel-2.6.26.patch
 Patch5:		svgalib-1.9.25-LDFLAGS.diff
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+ExclusiveArch:	%{ix86} x86_64
 
 %description
 The svgalib package provides the SVGAlib low-level graphics library for
