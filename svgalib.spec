@@ -17,6 +17,7 @@ Patch2:		svgalib-1.9.21-demos.patch
 Patch3:		svgalib-1.9.21-cfg.patch
 Patch4:		svgalib-1.9.25-kernel-2.6.26.patch
 Patch5:		svgalib-1.9.25-LDFLAGS.diff
+Patch6:		svgalib-1.9.25-round_gtf_gtfcalc_c.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 ExclusiveArch:	%{ix86} x86_64
 
@@ -62,6 +63,7 @@ want to develop X11 applications.
 %patch3 -p1 -b .defaultcfg
 %patch4 -p1 -b .kernel-2.6.26
 %patch5 -p1 -b .LDFLAGS
+%patch6 -p1 -b .round
 
 #the testlinear demo needs svgalib's internal libvga header, so copy it to the
 #demo dir
