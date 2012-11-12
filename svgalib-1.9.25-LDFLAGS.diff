@@ -1,0 +1,68 @@
+diff -Naur svgalib-1.9.25/lrmi-0.6m/Makefile svgalib-1.9.25.oden/lrmi-0.6m/Makefile
+--- svgalib-1.9.25/lrmi-0.6m/Makefile	2004-06-24 11:35:31.000000000 +0200
++++ svgalib-1.9.25.oden/lrmi-0.6m/Makefile	2008-12-23 14:13:30.000000000 +0100
+@@ -1,4 +1,5 @@
+ CFLAGS ?= -g -Wall
++LDFLAGS = 
+ 
+ sources = lrmi.c
+ objects = lrmi.o
+@@ -10,19 +11,19 @@
+ all: $(all)
+ 
+ vbetest: vbetest.c lrmi.o
+-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ mode3: mode3.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ dosint: dosint.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ vbemodeinfo: vbemodeinfo.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ vga_reset: vga_reset.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ install: mode3 vga_reset
+ 	install mode3 /sbin
+diff -Naur svgalib-1.9.25/lrmi-0.9/Makefile svgalib-1.9.25.oden/lrmi-0.9/Makefile
+--- svgalib-1.9.25/lrmi-0.9/Makefile	2005-10-04 16:18:52.000000000 +0200
++++ svgalib-1.9.25.oden/lrmi-0.9/Makefile	2008-12-23 14:14:03.000000000 +0100
+@@ -1,4 +1,5 @@
+ CFLAGS ?= -g -Wall
++LDFLAGS = 
+ 
+ sources = lrmi.c
+ objects = lrmi.o
+@@ -10,19 +11,19 @@
+ all: $(all)
+ 
+ vbetest: vbetest.c lrmi.o
+-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ mode3: mode3.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ dosint: dosint.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ vbemodeinfo: vbemodeinfo.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ vga_reset: vga_reset.c lrmi.o
+-	$(CC) $(CFLAGS) -o $@ $^
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+ 
+ install: mode3 vga_reset
+ 	install mode3 /sbin
