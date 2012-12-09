@@ -108,8 +108,6 @@ popd
 %endif
 
 %install
-rm -rf %{buildroot}
-
 install -d %{buildroot}{%{_libdir},%{_sysconfdir}/vga}
 
 %makeinstall \
@@ -135,17 +133,6 @@ install -m0755 lrmi-0.9/mode3 %{buildroot}%{_bindir}/
 install -m0755 lrmi-0.9/vga_reset %{buildroot}%{_bindir}/
 %endif
 
-%clean
-rm -fr %{buildroot}
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
 %files
 %defattr(-,root,root)
 %doc 0-README LICENSE svgalib.lsm
@@ -165,4 +152,76 @@ rm -fr %{buildroot}
 %{_includedir}/*
 #%{_libdir}/*.a
 %{_libdir}/*.so
-%{_mandir}/man3/*
+
+
+%changelog
+* Fri May 06 2011 Oden Eriksson <oeriksson@mandriva.com> 1.9.25-8mdv2011.0
++ Revision: 670251
+- mass rebuild
+
+* Fri Dec 03 2010 Oden Eriksson <oeriksson@mandriva.com> 1.9.25-7mdv2011.0
++ Revision: 607759
+- rebuild
+
+* Tue Mar 16 2010 Oden Eriksson <oeriksson@mandriva.com> 1.9.25-6mdv2010.1
++ Revision: 521164
+- rebuilt for 2010.1
+
+* Mon Sep 28 2009 Olivier Blin <oblin@mandriva.com> 1.9.25-5mdv2010.0
++ Revision: 450487
+- fix round() declaration in gtfcalc (patch from Fedora)
+- build on x86 only (from Arnaud Patard)
+
+* Tue Dec 23 2008 Oden Eriksson <oeriksson@mandriva.com> 1.9.25-4mdv2009.1
++ Revision: 318034
+- fix build
+- sync with svgalib-1.9.25-5.fc10.src.rpm
+- use %%ldflags
+
+* Wed Jun 18 2008 Thierry Vignaud <tv@mandriva.org> 1.9.25-3mdv2009.0
++ Revision: 225540
+- rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+* Wed Mar 05 2008 Oden Eriksson <oeriksson@mandriva.com> 1.9.25-2mdv2008.1
++ Revision: 179561
+- rebuild
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+
+* Thu Jan 18 2007 Per Øyvind Karlsen <pkarlsen@mandriva.com> 1.9.25-1mdv2007.0
++ Revision: 110443
+- new release: 1.9.27
+  lrmi 0.9
+  Makefile, libraries etc. fixed upstream, drop local fixes
+- Import svgalib
+
+* Sun Apr 30 2006 Per Øyvind Karlsen <pkarlsen@mandriva.com> 1.9.24-2mdk
+- only build lrmi on %%{ix86}
+- lib64 fix
+
+* Wed Apr 19 2006 Per Øyvind Karlsen <pkarlsen@mandriva.com> 1.9.24-1mdk
+- 1.9.24
+
+* Fri Jun 17 2005 Per Øyvind Karlsen <pkarlsen@mandriva.com> 1.9.21-1mdk
+- 1.9.21
+- drop P1 & P2 (not needed anymore)
+
+* Wed Jun 30 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 1.9.19-1mdk
+- 1.9.19
+- fix includes (P3)
+- be sure to build everything in %%build, and be sure to also build it with $RPM_OPT_FLAGS
+- drop P2 (just override it with a variable in stead)
+
+* Wed Feb 18 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 1.9.18-1mdk
+- reintroduced new svgalib version into contrib (should be more safe now that it
+  no longer requires setuid binaries)
+- based on old spec with all the necessary cleanups
+
