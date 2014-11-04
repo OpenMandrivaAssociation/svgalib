@@ -70,6 +70,8 @@ want to develop X11 applications.
 cp src/libvga.h demos
 
 %build
+export CC=gcc
+export CXX=g++
 
 make OPTIMIZE="%{optflags} -Wno-pointer-sign" \
     LDFLAGS="%{ldflags}" \
