@@ -9,7 +9,7 @@
 Summary:	A low-level fullscreen SVGA graphics library
 Name:		%{name}
 Version:	%{version}
-Release:	19
+Release:	20
 License:	Public Domain
 Group:		System/Libraries
 URL:		http://www.svgalib.org/
