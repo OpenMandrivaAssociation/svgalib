@@ -12,7 +12,7 @@ Version:	%{version}
 Release:	20
 License:	Public Domain
 Group:		System/Libraries
-URL:		http://www.svgalib.org/
+URL:		https://www.svgalib.org/
 Source0:	http://www.arava.co.il/matan/svgalib/%{name}-%{version}.tar.gz
 Patch0:		svgalib-1.9.21-makefiles.patch
 Patch1:		svgalib-1.4.3-fhs.patch
