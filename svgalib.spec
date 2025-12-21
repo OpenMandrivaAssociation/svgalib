@@ -25,6 +25,7 @@ Patch7:		svgalib-1.9.25-quickmath-h-redefinitions.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 ExclusiveArch:	%{ix86} x86_64
 
+BuildRequires:	make
 %description
 The svgalib package provides the SVGAlib low-level graphics library for
 Linux. SVGAlib is a library which allows applications to use full screen
